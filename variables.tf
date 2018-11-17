@@ -6,6 +6,10 @@ variable "service" {
   type = "string"
 }
 
+variable "vpc_name" {
+  type = "string"
+}
+
 
 variable "instance_types" {
   type = "string"
