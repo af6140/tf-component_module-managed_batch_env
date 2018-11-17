@@ -9,7 +9,7 @@ variable "service" {
 
 variable "instance_types" {
   type = "string"
-  default = ["m5.large"]
+  default = ["m5a.large"]
 }
 
 variable "max_vcpus" {
