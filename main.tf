@@ -72,7 +72,7 @@ resource "aws_batch_compute_environment" "managed" {
     instance_role = "${aws_iam_instance_profile.ecs_instance_profile.arn}"
 
     instance_type = [
-      "${split(",",random_id.compute_env.instance_types)}",
+      "${split(",",random_id.compute_env.keepers.instance_types)}",
     ]
 
     max_vcpus     = "${var.max_vcpus}"
