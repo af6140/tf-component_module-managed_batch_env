@@ -10,9 +10,8 @@ variable "vpc_name" {
   type = "string"
 }
 
-
 variable "instance_types" {
-  type = "string"
+  type    = "list"
   default = ["m5a.large"]
 }
 
@@ -21,7 +20,7 @@ variable "max_vcpus" {
 }
 
 variable "min_vcpus" {
-  type = "string"
+  type    = "string"
   default = "0"
 }
 
