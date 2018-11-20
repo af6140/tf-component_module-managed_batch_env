@@ -54,9 +54,9 @@ resource "aws_iam_role_policy_attachment" "aws_batch_service_role" {
 resource "random_id" "compute_env" {
   keepers = {
     # Generate a new id each time we switch to a new AMI id
-    instance_types     = ["${var.instance_types}"]
-    security_group_ids = ["${var.security_group_ids}"]
-    subnets            = ["${var.subnet_ids}"]
+    instance_types     = "${join(",",var.instance_types)}"
+    security_group_ids = "${join(",",var.security_group_ids)}"
+    subnets            = "${join(",",var.subnet_ids)}"
   }
 
   byte_length = 8
@@ -72,7 +72,7 @@ resource "aws_batch_compute_environment" "managed" {
     instance_role = "${aws_iam_instance_profile.ecs_instance_profile.arn}"
 
     instance_type = [
-      "${var.instance_types}",
+      "${split(",",random_id.compute_env.instance_types)}",
     ]
 
     max_vcpus     = "${var.max_vcpus}"
@@ -80,11 +80,11 @@ resource "aws_batch_compute_environment" "managed" {
     desired_vcpus = "${var.min_vcpus}"
 
     security_group_ids = [
-      "${random_id.compute_env.keepers.security_group_ids}",
+      "${split(",",random_id.compute_env.keepers.security_group_ids)}",
     ]
 
     subnets = [
-      "${random_id.compute_env.keepers.subnet_ids}",
+      "${split(",",random_id.compute_env.keepers.subnet_ids)}",
     ]
 
     type = "EC2"
