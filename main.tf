@@ -56,7 +56,7 @@ resource "random_id" "compute_env" {
     # Generate a new id each time we switch to a new AMI id
     instance_types     = "${join(",",var.instance_types)}"
     security_group_ids = "${join(",",var.security_group_ids)}"
-    subnets            = "${join(",",var.subnet_ids)}"
+    subnet_ids         = "${join(",",var.subnet_ids)}"
   }
 
   byte_length = 8
