@@ -35,3 +35,11 @@ variable "subnet_ids" {
 variable "ssh_key_name" {
   type = "string"
 }
+
+variable "service_role_arn" {
+  type = "string"
+}
+
+variable "instance_role_arn" {
+  type = "string"
+}
