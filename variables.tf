@@ -44,13 +44,18 @@ variable "instance_role_arn" {
   type = "string"
 }
 
-# variable "compute_resource_type" {
-#   type = "stirng"
-#   description = "ENUM(EC2, SPOT)"
-#   default = "EC2"
-# }
+variable "compute_resource_type" {
+  type        = "stirng"
+  description = "ENUM(EC2, SPOT)"
+  default     = "EC2"
+}
 
-# variable "bid_percentage" {
-#   type = "string"
-#   default = "20"
-# }
+variable "bid_percentage" {
+  type    = "string"
+  default = "20"
+}
+
+variable "spot_iam_fleet_role" {
+  type    = "string"
+  default = ""
+}

@@ -50,4 +50,50 @@ resource "aws_batch_compute_environment" "managed" {
     ignore_changes        = ["desired_vcpus", "ec2_key_pair", "tags"]
     create_before_destroy = true
   }
+  count = "${var.compute_resource_type == "EC2" ? 1 :0 }"
+}
+
+resource "aws_batch_compute_environment" "managed_spot" {
+  compute_environment_name = "${var.vpc_name}_${var.app_tier}_${var.service}_batch_env_${random_id.compute_env.hex}"
+  service_role             = "${var.service_role_arn}"
+  type                     = "MANAGED"
+  spot_iam_fleet_role      = "${var.spot_iam_fleet_role}"
+
+  #depends_on               = ["aws_iam_role_policy_attachment.aws_batch_service_role"]
+
+  compute_resources {
+    instance_role = "${var.instance_role_arn}"
+
+    instance_type = [
+      "${split(",",random_id.compute_env.keepers.instance_types)}",
+    ]
+
+    max_vcpus     = "${var.max_vcpus}"
+    min_vcpus     = "${var.min_vcpus}"
+    desired_vcpus = "${var.min_vcpus}"
+
+    security_group_ids = [
+      "${split(",",random_id.compute_env.keepers.security_group_ids)}",
+    ]
+
+    subnets = [
+      "${split(",",random_id.compute_env.keepers.subnet_ids)}",
+    ]
+
+    type = "SPOT"
+
+    ec2_key_pair = "${var.ssh_key_name}"
+
+    tags {
+      app_tier = "${var.app_tier}"
+      service  = "${var.service}"
+      role     = "batch"
+    }
+  }
+  lifecycle {
+    # so when run terraform it will not scale up it when it automatically scaled down.
+    ignore_changes        = ["desired_vcpus", "ec2_key_pair", "tags"]
+    create_before_destroy = true
+  }
+  count = "${var.compute_resource_type == "SPOT" ? 1 :0 }"
 }
