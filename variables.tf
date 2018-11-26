@@ -43,3 +43,14 @@ variable "service_role_arn" {
 variable "instance_role_arn" {
   type = "string"
 }
+
+# variable "compute_resource_type" {
+#   type = "stirng"
+#   description = "ENUM(EC2, SPOT)"
+#   default = "EC2"
+# }
+
+# variable "bid_percentage" {
+#   type = "string"
+#   default = "20"
+# }
