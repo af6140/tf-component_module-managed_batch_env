@@ -45,7 +45,7 @@ variable "instance_role_arn" {
 }
 
 variable "compute_resource_type" {
-  type        = "stirng"
+  type        = "string"
   description = "ENUM(EC2, SPOT)"
   default     = "EC2"
 }
