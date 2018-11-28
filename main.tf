@@ -25,19 +25,21 @@ resource "aws_batch_compute_environment" "managed" {
       "${split(",",random_id.compute_env.keepers.instance_types)}",
     ]
 
-    max_vcpus = "${var.max_vcpus}"
-    min_vcpus = "${var.min_vcpus}"
-
-    #desired_vcpus = "${var.min_vcpus}"
+    max_vcpus     = "${var.max_vcpus}"
+    min_vcpus     = "${var.min_vcpus}"
+    desired_vcpus = "${var.min_vcpus}"
 
     security_group_ids = [
       "${split(",",random_id.compute_env.keepers.security_group_ids)}",
     ]
+
     subnets = [
       "${split(",",random_id.compute_env.keepers.subnet_ids)}",
     ]
-    type = "EC2"
+
+    type         = "EC2"
     ec2_key_pair = "${random_id.compute_env.keepers.ec2_key_pair}"
+
     tags {
       app_tier = "${var.app_tier}"
       service  = "${var.service}"
@@ -46,7 +48,7 @@ resource "aws_batch_compute_environment" "managed" {
   }
   lifecycle {
     # so when run terraform it will not scale up it when it automatically scaled down.
-    ignore_changes        = ["desired_vcpus", "tags"]
+    ignore_changes        = ["desired_vcpus", "compute_resources.0.desired_vcpus", "tags"]
     create_before_destroy = true
   }
   count = "${var.compute_resource_type == "EC2" ? 1 :0 }"
@@ -70,16 +72,19 @@ resource "aws_batch_compute_environment" "managed_spot" {
     max_vcpus = "${var.max_vcpus}"
     min_vcpus = "${var.min_vcpus}"
 
-    #desired_vcpus = "${var.min_vcpus}"
+    desired_vcpus = "${var.min_vcpus}"
 
     security_group_ids = [
       "${split(",",random_id.compute_env.keepers.security_group_ids)}",
     ]
+
     subnets = [
       "${split(",",random_id.compute_env.keepers.subnet_ids)}",
     ]
+
     type         = "SPOT"
     ec2_key_pair = "${var.ssh_key_name}"
+
     tags {
       app_tier = "${var.app_tier}"
       service  = "${var.service}"
@@ -88,7 +93,7 @@ resource "aws_batch_compute_environment" "managed_spot" {
   }
   lifecycle {
     # so when run terraform it will not scale up it when it automatically scaled down.
-    ignore_changes        = ["desired_vcpus", "tags"]
+    ignore_changes        = ["desired_vcpus", "compute_resources.0.desired_vcpus", "tags"]
     create_before_destroy = true
   }
   count = "${var.compute_resource_type == "SPOT" ? 1 :0 }"
