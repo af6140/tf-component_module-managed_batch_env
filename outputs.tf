@@ -1,6 +1,7 @@
 locals {
   ecs_cluster_arn = "${element(concat(aws_batch_compute_environment.managed.*.ecs_cluster_arn, aws_batch_compute_environment.managed_spot.*.ecs_cluster_arn),0)}"
   arn             = "${element(concat(aws_batch_compute_environment.managed.*.arn ,aws_batch_compute_environment.managed_spot.*.arn),0)}"
+  name            = "${element(concat(aws_batch_compute_environment.managed.*.name ,aws_batch_compute_environment.managed_spot.*.name),0)}"
 }
 
 output "ecs_cluster_arn" {
@@ -9,4 +10,8 @@ output "ecs_cluster_arn" {
 
 output "arn" {
   value = "${local.arn}"
+}
+
+output "name" {
+  value = "${local.name}"
 }
