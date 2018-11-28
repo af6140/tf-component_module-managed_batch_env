@@ -5,6 +5,7 @@ resource "random_id" "compute_env" {
     security_group_ids    = "${join(",",var.security_group_ids)}"
     subnet_ids            = "${join(",",var.subnet_ids)}"
     ecs_instance_role_arn = "${var.instance_role_arn}"
+    ec2_key_pair          = "${var.ssh_key_name}"
   }
 
   byte_length = 8
@@ -38,7 +39,7 @@ resource "aws_batch_compute_environment" "managed" {
 
     type = "EC2"
 
-    ec2_key_pair = "${var.ssh_key_name}"
+    ec2_key_pair = "${random_id.compute_env.keepers.ec2_key_pair}"
 
     tags {
       app_tier = "${var.app_tier}"
@@ -48,7 +49,7 @@ resource "aws_batch_compute_environment" "managed" {
   }
   lifecycle {
     # so when run terraform it will not scale up it when it automatically scaled down.
-    ignore_changes        = ["desired_vcpus", "ec2_key_pair", "tags"]
+    ignore_changes        = ["desired_vcpus", "tags"]
     create_before_destroy = true
   }
   count = "${var.compute_resource_type == "EC2" ? 1 :0 }"
