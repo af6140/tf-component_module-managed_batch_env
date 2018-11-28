@@ -1,9 +1,10 @@
 resource "random_id" "compute_env" {
   keepers = {
     # Generate a new id each time we switch to a new AMI id
-    instance_types     = "${join(",",var.instance_types)}"
-    security_group_ids = "${join(",",var.security_group_ids)}"
-    subnet_ids         = "${join(",",var.subnet_ids)}"
+    instance_types        = "${join(",",var.instance_types)}"
+    security_group_ids    = "${join(",",var.security_group_ids)}"
+    subnet_ids            = "${join(",",var.subnet_ids)}"
+    ecs_instance_role_arn = "${var.instance_role_arn}"
   }
 
   byte_length = 8
@@ -17,7 +18,7 @@ resource "aws_batch_compute_environment" "managed" {
   #depends_on               = ["aws_iam_role_policy_attachment.aws_batch_service_role"]
 
   compute_resources {
-    instance_role = "${var.instance_role_arn}"
+    instance_role = "${random_id.compute_env.keepers.ecs_instance_role_arn}"
 
     instance_type = [
       "${split(",",random_id.compute_env.keepers.instance_types)}",
