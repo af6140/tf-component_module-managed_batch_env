@@ -55,10 +55,9 @@ resource "aws_batch_compute_environment" "managed" {
 }
 
 resource "aws_batch_compute_environment" "managed_spot" {
-  compute_environment_name = "${var.vpc_name}_${var.app_tier}_${var.service}_batch_env_${random_id.compute_env.hex}"
+  compute_environment_name = "${var.vpc_name}_${var.app_tier}_${var.service}_batch_spotenv_${random_id.compute_env.hex}"
   service_role             = "${var.service_role_arn}"
   type                     = "MANAGED"
-  spot_iam_fleet_role      = "${var.spot_fleet_role_arn}"
 
   #depends_on               = ["aws_iam_role_policy_attachment.aws_batch_service_role"]
 
@@ -96,5 +95,6 @@ resource "aws_batch_compute_environment" "managed_spot" {
     ignore_changes        = ["desired_vcpus", "compute_resources.0.desired_vcpus", "tags"]
     create_before_destroy = true
   }
-  count = "${var.compute_resource_type == "SPOT" ? 1 :0 }"
+  count               = "${var.compute_resource_type == "SPOT" ? 1 :0 }"
+  spot_iam_fleet_role = "${var.spot_fleet_role_arn}"
 }
