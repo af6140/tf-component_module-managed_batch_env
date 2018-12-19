@@ -58,7 +58,7 @@ resource "aws_batch_compute_environment" "managed_spot" {
   compute_environment_name = "${var.vpc_name}_${var.app_tier}_${var.service}_batch_env_${random_id.compute_env.hex}"
   service_role             = "${var.service_role_arn}"
   type                     = "MANAGED"
-  spot_iam_fleet_role      = "${var.spot_iam_fleet_role}"
+  spot_iam_fleet_role      = "${var.spot_fleet_role_arn}"
 
   #depends_on               = ["aws_iam_role_policy_attachment.aws_batch_service_role"]
 

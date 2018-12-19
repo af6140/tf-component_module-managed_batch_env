@@ -55,7 +55,7 @@ variable "bid_percentage" {
   default = "20"
 }
 
-variable "spot_iam_fleet_role" {
+variable "spot_fleet_role_arn" {
   type    = "string"
   default = ""
 }
