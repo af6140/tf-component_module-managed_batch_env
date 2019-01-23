@@ -79,7 +79,7 @@ resource "aws_batch_compute_environment" "managed_spot" {
     ]
 
     subnets = [
-      "${va.subnet_ids}",
+      "${var.subnet_ids}",
     ]
 
     type         = "SPOT"
