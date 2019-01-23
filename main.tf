@@ -18,6 +18,7 @@ resource "aws_batch_compute_environment" "managed" {
 
   #depends_on               = ["aws_iam_role_policy_attachment.aws_batch_service_role"]
 
+  depends_on = "${random_id.compute_env}"
   compute_resources {
     instance_role = "${random_id.compute_env.keepers.ecs_instance_role_arn}"
 
