@@ -1,13 +1,3 @@
-resource "null_resource" "input" {
-  triggers {
-    instance_types        = "${join(",",var.instance_types)}"
-    security_group_ids    = "${join(",",var.security_group_ids)}"
-    subnet_ids            = "${join(",",var.subnet_ids)}"
-    ecs_instance_role_arn = "${var.instance_role_arn}"
-    ec2_key_pair          = "${var.ssh_key_name}"
-  }
-}
-
 resource "random_id" "compute_env" {
   keepers = {
     # Generate a new id each time we switch to a new AMI id
@@ -19,8 +9,6 @@ resource "random_id" "compute_env" {
   }
 
   byte_length = 8
-
-  depends_on = ["null_resource.input"]
 }
 
 resource "aws_batch_compute_environment" "managed" {
