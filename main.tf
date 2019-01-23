@@ -20,7 +20,7 @@ resource "random_id" "compute_env" {
 
   byte_length = 8
 
-  depends_on = ["${null_resource.input}"]
+  depends_on = ["null_resource.input"]
 }
 
 resource "aws_batch_compute_environment" "managed" {
