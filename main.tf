@@ -3,7 +3,7 @@ resource "null_resource" "input" {
     instance_types        = ["${var.instance_types}"]
     security_group_ids    = ["${var.security_group_ids}"]
     subnet_ids            = ["${var.subnet_ids}"]
-    ecs_instance_role_arn = "${var.ecs_instance_role_arn}"
+    ecs_instance_role_arn = "${var.instance_role_arn}"
     ec2_key_pair          = "${var.ssh_key_name}"
   }
 }
