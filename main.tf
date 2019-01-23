@@ -1,8 +1,8 @@
 resource "null_resource" "input" {
   triggers {
-    instance_types        = ["${var.instance_types}"]
-    security_group_ids    = ["${var.security_group_ids}"]
-    subnet_ids            = ["${var.subnet_ids}"]
+    instance_types        = "${join(",",var.instance_types)}"
+    security_group_ids    = "${join(",",var.security_group_ids)}"
+    subnet_ids            = "${join(",",var.subnet_ids)}"
     ecs_instance_role_arn = "${var.instance_role_arn}"
     ec2_key_pair          = "${var.ssh_key_name}"
   }
