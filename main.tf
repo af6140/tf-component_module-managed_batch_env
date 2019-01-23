@@ -20,10 +20,10 @@ resource "aws_batch_compute_environment" "managed" {
 
   depends_on = ["random_id.compute_env"]
   compute_resources {
-    instance_role = "${random_id.compute_env.keepers.ecs_instance_role_arn}"
+    instance_role = "${var.instance_role_arn}"
 
     instance_type = [
-      "${split(",",random_id.compute_env.keepers.instance_types)}",
+      "${var.instance_types}",
     ]
 
     max_vcpus     = "${var.max_vcpus}"
@@ -31,15 +31,15 @@ resource "aws_batch_compute_environment" "managed" {
     desired_vcpus = "${var.min_vcpus}"
 
     security_group_ids = [
-      "${split(",",random_id.compute_env.keepers.security_group_ids)}",
+      "${var.security_group_ids}",
     ]
 
     subnets = [
-      "${split(",",random_id.compute_env.keepers.subnet_ids)}",
+      "${var.subnet_ids}",
     ]
 
     type         = "EC2"
-    ec2_key_pair = "${random_id.compute_env.keepers.ec2_key_pair}"
+    ec2_key_pair = "${var.ssh_key_name}"
 
     tags {
       app_tier = "${var.app_tier}"
@@ -66,7 +66,7 @@ resource "aws_batch_compute_environment" "managed_spot" {
     instance_role = "${var.instance_role_arn}"
 
     instance_type = [
-      "${split(",",random_id.compute_env.keepers.instance_types)}",
+      "${var.instance_types}",
     ]
 
     max_vcpus = "${var.max_vcpus}"
@@ -75,11 +75,11 @@ resource "aws_batch_compute_environment" "managed_spot" {
     desired_vcpus = "${var.min_vcpus}"
 
     security_group_ids = [
-      "${split(",",random_id.compute_env.keepers.security_group_ids)}",
+      "${var.security_group_ids}",
     ]
 
     subnets = [
-      "${split(",",random_id.compute_env.keepers.subnet_ids)}",
+      "${va.subnet_ids}",
     ]
 
     type         = "SPOT"
